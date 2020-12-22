@@ -1,10 +1,12 @@
 import React from "react";
 import { useSignUpPageStyles } from "../styles";
 import SEO from "../components/shared/Seo";
-import { Card, CardHeader, TextField, Button, Typography } from "@material-ui/core";
+import { Card, TextField, Button, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import FacebookIconBlue from '../images/facebook-icon-blue.svg';
 import FacebookIconWhite from '../images/facebook-icon-white.png';
+import { LoginWithFacebook } from "./login";
+
 function SignUpPage() {
   const classes = useSignUpPageStyles();
 
@@ -14,34 +16,11 @@ function SignUpPage() {
       <section className={classes.section}>
         <article>
           <Card className={classes.card}>
-            <CardHeader className={classes.cardHeader} />
-              <form>
-                <TextField 
-                  fullWidth
-                  variant="filled"
-                  label="Username"
-                  margin="dense"
-                  className={classes.textField}
-                  autocomplete="username"
-                />
-                <TextField 
-                  fullWidth
-                  variant="filled"
-                  label="Password"
-                  margin="dense"
-                  className={classes.textField}
-                  autocomplete="current-password"
-                />
-                <Button
-                  variant="contained"
-                  fullWidth
-                  color="primary"
-                  className={classes.button}
-                  type="submit"
-                >
-                  Log In
-                </Button>
-              </form>
+            <div className={classes.cardHeader} />
+              <Typography className={classes.cardHeaderSubHeader}>
+                Sign up to see photos and videos from your friends.
+              </Typography>
+              <LoginWithFacebook color="primary" iconColor="white" variant="contained" />
               <div className={classes.orContainer}>
                 <div className={classes.orLine} />
                   <div>
@@ -51,20 +30,57 @@ function SignUpPage() {
                   </div>
                   <div className={classes.orLine} />
                 </div>
-              <LoginWithFacebook color="secondary" iconColor="blue" />
-              <Button fullWidth color="secondary">
-                <Typography variant="caption">
-                  Forgot Password?
-                </Typography>
-              </Button>
+              <form>
+                <TextField 
+                  fullWidth
+                  variant="filled"
+                  label="Email"
+                  type="email"
+                  margin="dense"
+                  className={classes.textField}
+                />
+                <TextField 
+                  fullWidth
+                  variant="filled"
+                  label="Full Name"
+                  margin="dense"
+                  className={classes.textField}
+                />
+                <TextField 
+                  fullWidth
+                  variant="filled"
+                  label="Username"
+                  margin="dense"
+                  className={classes.textField}
+                  autocomplere="username"
+                />
+                <TextField 
+                  fullWidth
+                  variant="filled"
+                  label="Password"
+                  type="password"
+                  margin="dense"
+                  className={classes.textField}
+                  autoComplete="new-password"
+                />
+                <Button
+                  variant="contained"
+                  fullWidth
+                  color="primary"
+                  className={classes.button}
+                  type="submit"
+                >
+                  Sign Up
+                </Button>
+              </form>
           </Card>
-          <Card className={classes.signUpCard}>
+          <Card className={classes.loginCard}>
             <Typography>
               Don't have an account?
             </Typography>
-            <Link to="/accounts/emailsignup">
-              <Button color="primary" className={classes.signUpButton}>
-                Sign Up 
+            <Link to="/accounts/login">
+              <Button color="primary" className={classes.loginButton}>
+                Log in 
               </Button>
             </Link>
           </Card>

@@ -29,6 +29,7 @@ function LoginPage() {
                   fullWidth
                   variant="filled"
                   label="Password"
+                  type="password"
                   margin="dense"
                   className={classes.textField}
                   autocomplete="current-password"
@@ -75,12 +76,12 @@ function LoginPage() {
   )
 }
 
-export function LoginWithFacebook({ color, iconColor }) {
+export function LoginWithFacebook({ color, iconColor, variant }) {
   const classes = useLoginPageStyles();
   const facebookIcon = iconColor === 'blue' ? FacebookIconBlue : FacebookIconWhite;
 
   return(
-    <Button fullWidth color={color}>
+    <Button fullWidth color={color} variant={variant}>
       <img 
         src={facebookIcon}
         alt="facebook icon"
