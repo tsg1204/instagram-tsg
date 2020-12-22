@@ -1,7 +1,7 @@
 import React from "react";
 import { useLayoutStyles } from "../../styles";
-import SEO from '../shared/Seo';
-import Navbar from '../shared/Navbar';
+import SEO from './Seo';
+import Navbar from './Navbar';
 
 function Layout({ children, title, marginTop = 60  }) {
   const classes = useLayoutStyles();
