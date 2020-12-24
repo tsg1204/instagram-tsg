@@ -13,6 +13,7 @@ import logo from '../../images/logo.png';
 import { LoadingIcon, AddIcon, LikeIcon, LikeActiveIcon, ExploreIcon, ExploreActiveIcon, HomeIcon, HomeActiveIcon  } from '../../icons';
 import { defaultCurrentUser, getDefaultUser } from '../../data';
 import NotificationTooltip from '../notification/NotificationTooltip';
+import NotificationList from "../notification/NotificationList";
 
 function Navbar( {minimalNavbar }) {
   const classes = useNavbarStyles();
@@ -141,8 +142,13 @@ React.useEffect(() => {
     setTooltip(false);
   }
 
+  function handleHideList() {
+    setList(false);
+  }
+
   return (
     <div className={classes.linksContainer}>
+      {showList && <NotificationList handleHideList={handleHideList} />}
       <div className={classes.linksWrapper}>
         <Hidden xsDown>
           <AddIcon />
