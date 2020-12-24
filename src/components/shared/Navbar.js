@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavbarStyles, WhiteTooltip } from "../../styles";
+import { useNavbarStyles, WhiteTooltip, RedTooltip } from "../../styles";
 import {   AppBar,
   Hidden,
   InputBase,
@@ -12,6 +12,7 @@ import { Link, useHistory } from "react-router-dom";
 import logo from '../../images/logo.png';
 import { LoadingIcon, AddIcon, LikeIcon, LikeActiveIcon, ExploreIcon, ExploreActiveIcon, HomeIcon, HomeActiveIcon  } from '../../icons';
 import { defaultCurrentUser, getDefaultUser } from '../../data';
+import NotificationTooltip from '../notification/NotificationTooltip';
 
 function Navbar( {minimalNavbar }) {
   const classes = useNavbarStyles();
@@ -122,10 +123,23 @@ function Search({ history }) {
 function Links({ path }) {
   const classes = useNavbarStyles();
   const [showList, setList] = React.useState(false);
+  const [showTooltip, setTooltip] = React.useState(true);
 
-function handleToggleList() {
-  setList(prev => !prev);
-}
+React.useEffect(() => {
+  const timeout = setTimeout(handleHideTooltip, 5000);
+
+  return () => {
+    clearTimeout(timeout)
+  }
+}, [])
+
+  function handleToggleList() {
+    setList(prev => !prev);
+  }
+
+  function handleHideTooltip() {
+    setTooltip(false);
+  }
 
   return (
     <div className={classes.linksContainer}>
@@ -139,9 +153,17 @@ function handleToggleList() {
         <Link to="/explore">
           {path === "/" ? <ExploreActiveIcon /> : <ExploreIcon />}
         </Link>
-        <div className={classes.notifications} onClick={handleToggleList}>
-          {showList ? <LikeActiveIcon /> : <LikeIcon />}
-        </div>
+        <RedTooltip
+          arrow
+          open={showTooltip}
+          onOpen={handleHideTooltip}
+          TransitionComponent={Zoom}
+          title={<NotificationTooltip />}
+        >
+          <div className={classes.notifications} onClick={handleToggleList}>
+            {showList ? <LikeActiveIcon /> : <LikeIcon />}
+          </div>
+        </RedTooltip>
         <Link to={`/${defaultCurrentUser.username}`}>
           <div className={path === `/${defaultCurrentUser.username}` ? classes.profileActive : ""}></div>
           <Avatar 
