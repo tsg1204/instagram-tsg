@@ -3,8 +3,6 @@ import { useSignUpPageStyles } from "../styles";
 import SEO from "../components/shared/Seo";
 import { Card, TextField, Button, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import FacebookIconBlue from '../images/facebook-icon-blue.svg';
-import FacebookIconWhite from '../images/facebook-icon-white.png';
 import { LoginWithFacebook } from "./login";
 
 function SignUpPage() {
@@ -76,7 +74,7 @@ function SignUpPage() {
           </Card>
           <Card className={classes.loginCard}>
             <Typography>
-              Don't have an account?
+              Have an account?
             </Typography>
             <Link to="/accounts/login">
               <Button color="primary" className={classes.loginButton}>
