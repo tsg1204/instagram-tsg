@@ -1,20 +1,39 @@
-import React from "react";
-import { useFeedPostStyles } from "../../styles";
-import UserCard from "../shared/UserCard";
-import { CommentIcon, MoreIcon, ShareIcon, UnlikeIcon, LikeIcon, RemoveIcon, SaveIcon } from '../../icons';
-import { Link } from "react-router-dom";
-import { Button, Hidden, Typography, Divider, TextField } from "@material-ui/core";
-import HTMLEllipsis from "react-lines-ellipsis/lib/html";
+import React from 'react';
+import { useFeedPostStyles } from '../../styles';
+import UserCard from '../shared/UserCard';
+import {
+  CommentIcon,
+  MoreIcon,
+  ShareIcon,
+  UnlikeIcon,
+  LikeIcon,
+  RemoveIcon,
+  SaveIcon,
+} from '../../icons';
+import { Link } from 'react-router-dom';
+import {
+  Button,
+  Hidden,
+  Typography,
+  Divider,
+  TextField,
+} from '@material-ui/core';
+import HTMLEllipsis from 'react-lines-ellipsis/lib/html';
+import FollowSuggestions from '../shared/FollowSuggestions';
 
-function FeedPost({ post }) {
+function FeedPost({ post, index }) {
   const classes = useFeedPostStyles();
   const [showCaption, setCaption] = React.useState(false);
   const { media, id, likes, user, caption, comments } = post;
+  const showFollowSuggestions = index === 1;
 
-  return(
+  return (
     <>
-      <article className={classes.article}>
-      {/* Feed Post Header */}
+      <article
+        className={classes.article}
+        style={{ marginBottom: showFollowSuggestions && 30 }}
+      >
+        {/* Feed Post Header */}
         <div className={classes.postHeader}>
           <UserCard user={user} />
           <MoreIcon className={classes.moreIcon} />
@@ -38,38 +57,57 @@ function FeedPost({ post }) {
           </Typography>
           <div className={showCaption ? classes.expanded : classes.collapsed}>
             <Link to={`/${user.username}`}>
-              <Typography variant="subtitle2" component="span" className={classes.username}>
+              <Typography
+                variant="subtitle2"
+                component="span"
+                className={classes.username}
+              >
                 {user.username}
               </Typography>
             </Link>
             {showCaption ? (
-              <Typography variant="body2" component="span" dangerouslySetInnerHTML={{ __html: caption}} />
+              <Typography
+                variant="body2"
+                component="span"
+                dangerouslySetInnerHTML={{ __html: caption }}
+              />
             ) : (
               <div className={classes.captionWrapper}>
-                <HTMLEllipsis 
+                <HTMLEllipsis
                   unsafeHTML={caption}
                   className={classes.caption}
                   maxLine="0"
                   ellipsis="..."
                   basedOn="letters"
                 />
-                <Button className={classes.moreButton} onClick={() => setCaption(true)}>
+                <Button
+                  className={classes.moreButton}
+                  onClick={() => setCaption(true)}
+                >
                   more
                 </Button>
               </div>
             )}
           </div>
           <Link to={`/p/${id}`}>
-              <Typography className={classes.commentsLink} variant="body2" component="div">
-              View all { comments.length} comments
-              </Typography>
+            <Typography
+              className={classes.commentsLink}
+              variant="body2"
+              component="div"
+            >
+              View all {comments.length} comments
+            </Typography>
           </Link>
-          {comments.map(comment => (
+          {comments.map((comment) => (
             <div key={comment.id}>
               <Link to={`/${comment.user.username}`}>
-                <Typography variant="subtitle2" component="span" className={classes.commentUsername}>
-                {comment.user.username}
-                </Typography>{" "}
+                <Typography
+                  variant="subtitle2"
+                  component="span"
+                  className={classes.commentUsername}
+                >
+                  {comment.user.username}
+                </Typography>{' '}
                 <Typography variant="body2" component="span">
                   {comment.content}
                 </Typography>
@@ -81,14 +119,13 @@ function FeedPost({ post }) {
           </Typography>
         </div>
         <Hidden xsDown>
-            <Divider />
-            <Comment />
+          <Divider />
+          <Comment />
         </Hidden>
       </article>
-
+      {showFollowSuggestions && <FollowSuggestions />}
     </>
-  )
-
+  );
 }
 
 function LikeButton() {
@@ -108,7 +145,7 @@ function LikeButton() {
     setLiked(false);
   }
 
-  return <Icon className={className} onClick={onClick} />
+  return <Icon className={className} onClick={onClick} />;
 }
 
 function SaveButton() {
@@ -127,7 +164,7 @@ function SaveButton() {
     setSaved(false);
   }
 
-  return <Icon className={classes.saveIcon} onClick={onClick} />
+  return <Icon className={classes.saveIcon} onClick={onClick} />;
 }
 
 function Comment() {
@@ -143,19 +180,23 @@ function Comment() {
         multiline
         rowsMax={2}
         row={1}
-        onChange={event => setContent(event.target.value)}
+        onChange={(event) => setContent(event.target.value)}
         InputProps={{
           classes: {
             root: classes.root,
-            underline: classes.underline
-          }
+            underline: classes.underline,
+          },
         }}
       />
-      <Button color="primary" className={classes.commentButton} disabled={!content.trim()}>
+      <Button
+        color="primary"
+        className={classes.commentButton}
+        disabled={!content.trim()}
+      >
         Post
       </Button>
     </div>
-  )
+  );
 }
 
 export default FeedPost;
