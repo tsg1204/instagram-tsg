@@ -62,11 +62,11 @@ export const defaultCurrentUser = {
   username: 'me',
   name: 'myself',
   profile_image: post_media,
-  website: 'https://react12.io',
+  website: 'https://tsg.io',
   email: 'me@gmail.com',
   bio: 'This is my bio',
   phone_number: '555-555-5555',
-  posts: Array.from({ length: 10 }, () => getDefaultPost()),
+  posts: [],
   followers: [defaultUser],
   following: [defaultUser],
 };
