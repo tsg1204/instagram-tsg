@@ -5,7 +5,7 @@ import 'firebase/database';
 import defaultUserImage from './images/default-user-image.jpg';
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_USER } from './graphql/mutations';
-import { API_KEY, CLIENT_ID, CLIENT_SECRET } from '../dev/dev';
+import { API_KEY, CLIENT_ID, CLIENT_SECRET } from './dev/dev';
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -17,7 +17,7 @@ firebase.initializeApp({
   projectId: 'instagram-21e99',
   storageBucket: 'instagram.appspot.com',
   messagingSenderId: '746216895507',
-  appId: `1:746216895507:web:${CLIENT_SECRET}`,
+  appId: `1:746216895507:web:${CLIENT_ID}`,
 });
 
 export const AuthContext = React.createContext();
