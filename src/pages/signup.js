@@ -28,6 +28,7 @@ function SignUpPage() {
     password: '',
   });
   const history = useHistory();
+  const [error, setError] = React.useState('');
 
   // async function handleSubmit(event) {
   //   event.preventDefault();
@@ -37,8 +38,13 @@ function SignUpPage() {
 
   async function onSubmit(data) {
     //console.log({ data });
-    await signUpWithEmailAndPassword(data);
-    history.push('/');
+    try {
+      await signUpWithEmailAndPassword(data);
+      history.push('/');
+    } catch (error) {
+      console.error('Error signing up', error);
+      setError(error.message);
+    }
   }
 
   const errorIcon = (
@@ -155,7 +161,7 @@ function SignUpPage() {
                 autoComplete="new-password"
               />
               <Button
-                disabled={!formState.isValid || formState.isSubmitting}
+                disabled={error || !formState.isValid || formState.isSubmitting}
                 variant="contained"
                 fullWidth
                 color="primary"
@@ -165,6 +171,7 @@ function SignUpPage() {
                 Sign Up
               </Button>
             </form>
+            <AuthError error={error} />
           </Card>
           <Card className={classes.loginCard}>
             <Typography>Have an account?</Typography>
@@ -177,6 +184,21 @@ function SignUpPage() {
         </article>
       </section>
     </>
+  );
+}
+
+export function AuthError({ error }) {
+  return (
+    Boolean(error) && (
+      <Typography
+        align="center"
+        gutterBottom
+        variant="body2"
+        style={{ color: 'red' }}
+      >
+        {error}
+      </Typography>
+    )
   );
 }
 
