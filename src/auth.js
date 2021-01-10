@@ -5,18 +5,19 @@ import 'firebase/database';
 import defaultUserImage from './images/default-user-image.jpg';
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_USER } from './graphql/mutations';
+import { API_KEY, CLIENT_ID, CLIENT_SECRET } from './dev/dev';
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
 // Find these options in your Firebase console
 firebase.initializeApp({
-  apiKey: 'AIzaSyCr477aARRgjoKebzDczTQ_sF4f1CeHIC0',
+  apiKey: API_KEY,
   authDomain: 'instagram.firebaseapp.com',
   databaseURL: 'https://instagram-21e99-default-rtdb.firebaseio.com',
   projectId: 'instagram-21e99',
   storageBucket: 'instagram.appspot.com',
   messagingSenderId: '746216895507',
-  //appId: "1:746216895507:web:1d2a10cbb3b25c215c92f1",
+  appId: `1:746216895507:web:${CLIENT_SECRET}`,
 });
 
 export const AuthContext = React.createContext();
@@ -54,8 +55,24 @@ function AuthProvider({ children }) {
     });
   }, []);
 
-  async function signInWithGoogle() {
-    await firebase.auth().signInWithPopup(provider);
+  async function logInWithGoogle() {
+    const data = await firebase.auth().signInWithPopup(provider);
+    if (data.additionalUserInfo.isNewUser) {
+      // console.log({ data });
+      const { uid, displayName, email, photoURL } = data.user;
+      const username = `${displayName.replace(/\s+/g, '')}${uid.slice(-5)}`;
+      const variables = {
+        userId: uid,
+        name: displayName,
+        username,
+        email,
+        bio: '',
+        website: '',
+        phoneNumber: '',
+        profileImage: photoURL,
+      };
+      await createUser({ variables });
+    }
   }
 
   async function signUpWithEmailAndPassword(formData) {
@@ -97,7 +114,7 @@ function AuthProvider({ children }) {
       <AuthContext.Provider
         value={{
           authState,
-          signInWithGoogle,
+          logInWithGoogle,
           signOut,
           signUpWithEmailAndPassword,
           logInWithEmailAndPassword,

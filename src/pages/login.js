@@ -17,6 +17,7 @@ import { AuthContext } from '../auth';
 import isEmail from 'validator/lib/isEmail';
 import { GET_USER_EMAIL } from '../graphql/queries';
 import { useApolloClient } from '@apollo/react-hooks';
+import { AuthError } from './signup';
 
 function LoginPage() {
   const classes = useLoginPageStyles();
@@ -131,6 +132,7 @@ function LoginPage() {
               <div className={classes.orLine} />
             </div>
             <LoginWithFacebook color="secondary" iconColor="blue" />
+            <AuthError error={error} />
             <Button fullWidth color="secondary">
               <Typography variant="caption">Forgot Password?</Typography>
             </Button>
@@ -151,18 +153,39 @@ function LoginPage() {
 
 export function LoginWithFacebook({ color, iconColor, variant }) {
   const classes = useLoginPageStyles();
+  const { logInWithGoogle } = React.useContext(AuthContext);
   const facebookIcon =
     iconColor === 'blue' ? FacebookIconBlue : FacebookIconWhite;
+  const [error, setError] = React.useState('');
+  const history = useHistory();
 
+  async function handleLogInWithGoogle() {
+    try {
+      await logInWithGoogle();
+      setTimeout(() => history.push('/'), 0);
+    } catch (error) {
+      console.error('Error logging in with Google', error);
+      setError(error.message);
+    }
+  }
   return (
-    <Button fullWidth color={color} variant={variant}>
-      <img
-        src={facebookIcon}
-        alt="facebook icon"
-        className={classes.facebookIcon}
-      />
-      Log In with Facebook
-    </Button>
+    <>
+      <Button
+        onClick={handleLogInWithGoogle}
+        fullWidth
+        color={color}
+        variant={variant}
+        //disabled={true}
+      >
+        <img
+          src={facebookIcon}
+          alt="facebook icon"
+          className={classes.facebookIcon}
+        />
+        Log In with Facebook
+      </Button>
+      <AuthError error={error} />
+    </>
   );
 }
 
