@@ -21,14 +21,17 @@ import {
 import OptionsDialog from '../shared/OptionsDialog';
 import { defaultPost } from '../../data';
 import PostSkeleton from './PostSkeleton';
+import { GET_POST } from '../../graphql/subscriptions';
 
-function Post() {
+function Post({ postId }) {
   const classes = usePostStyles();
   const [loading, setLoading] = React.useState(true);
   const [showOptionsDialog, setOptionsDialog] = React.useState(false);
-  const { media, id, likes, user, caption, comments } = defaultPost;
+  const { media, id, likes, user, caption, comments } = data.posts_by_pk;
+  const variables = { postId };
+  const { data, loading } = useSubscription(GET_POST, { variables });
 
-  setTimeout(() => setLoading(false), 2000);
+  //setTimeout(() => setLoading(false), 2000);
   if (loading) return <PostSkeleton />;
 
   return (
