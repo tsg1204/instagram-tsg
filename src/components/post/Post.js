@@ -175,7 +175,8 @@ function UserComment({ comment }) {
         style={{ marginRight: 14, width: 32, height: 32 }}
       />
       <div style={{ display: 'flex', flexDirection: 'column ' }}>
-        <Link to={comment.user.username}>
+        {console.log('Username: ', comment.user.username)}
+        <Link to={`/${comment.user.username}`}>
           <Typography
             variant="subtitle2"
             component="span"
