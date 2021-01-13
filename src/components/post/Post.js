@@ -41,10 +41,11 @@ function Post({ postId }) {
   const variables = { postId };
   console.log(postId);
   const { data, loading } = useSubscription(GET_POST, { variables });
-  console.log('data: ', data); //undefined...???
 
   // setTimeout(() => setLoading(false), 2000);
   if (loading) return <PostSkeleton />;
+
+  console.log('data: ', data); //undefined...???
 
   const {
     id,
@@ -52,6 +53,7 @@ function Post({ postId }) {
     likes,
     likes_aggregate,
     saved_posts,
+    user_id,
     location,
     user,
     caption,

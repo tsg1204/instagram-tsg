@@ -5,8 +5,9 @@ import { LoadingLargeIcon } from '../../icons';
 import { getDefaultPost, defaultUser } from '../../data';
 import GridPost from '../shared/GridPost';
 import { Link } from 'react-router-dom';
+import { GET_POST, GET_MORE_POSTS_FROM_USER } from '../../graphql/queries';
 
-function MorePostsFromUser() {
+function MorePostsFromUser({ postId }) {
   const classes = useMorePostsFromUserStyles();
 
   let loading = false;
