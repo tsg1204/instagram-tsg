@@ -146,16 +146,18 @@ export const CREATE_COMMENT = gql`
     insert_comments(
       objects: { post_id: $postId, user_id: $userId, content: $content }
     ) {
-      returning {
-        id
-        created_at
-        post_id
-        user_id
-        content
-        user {
-          username
-        }
-      }
+      affected_rows
+    }
+  }
+`;
+
+export const CHECK_NOTIFICATIONS = gql`
+  mutation checkNotifications($userId: uuid!, $lastChecked: String!) {
+    update_users(
+      where: { id: { _eq: $userId } }
+      _set: { last_checked: $lastChecked }
+    ) {
+      affected_rows
     }
   }
 `;
