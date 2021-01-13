@@ -13,20 +13,19 @@ function GridPost({ post }) {
       state: { modal: true },
     });
   }
-
-  const likesCount = post.likes_aggregate.aggregate.count;
-  const commentsCount = post.comments_aggregate.aggregate.count;
+  // const likesCount = post.likes_aggregate.aggregate.count;
+  // const commentsCount = post.comments_aggregate.aggregate.count;
 
   return (
     <div onClick={handleOpenPostModal} className={classes.gridPostContainer}>
       <div className={classes.gridPostOverlay}>
         <div className={classes.gridPostInfo}>
           <span className={classes.likes} />
-          <Typography>{likesCount}</Typography>
+          <Typography>{post.likes}</Typography>
         </div>
         <div className={classes.gridPostInfo}>
           <span className={classes.comments} />
-          <Typography>{commentsCount}</Typography>
+          <Typography>{post.comments.length}</Typography>
         </div>
       </div>
       <img src={post.media} alt="Post cover" className={classes.image} />

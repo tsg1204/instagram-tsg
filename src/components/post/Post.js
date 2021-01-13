@@ -33,14 +33,15 @@ import {
   CREATE_COMMENT,
 } from '../../graphql/mutations';
 import { formatDateToNowShort, formatPostDate } from '../../utils/formatDate';
-import Img from 'react-graceful-image';
 
 function Post({ postId }) {
   const classes = usePostStyles();
   // const [loading, setLoading] = React.useState(true);
   const [showOptionsDialog, setOptionsDialog] = React.useState(false);
   const variables = { postId };
+  console.log(postId);
   const { data, loading } = useSubscription(GET_POST, { variables });
+  console.log('data: ', data); //undefined...???
 
   // setTimeout(() => setLoading(false), 2000);
   if (loading) return <PostSkeleton />;
@@ -73,7 +74,7 @@ function Post({ postId }) {
         </div>
         {/* Post Image */}
         <div className={classes.postImage}>
-          <Img src={media} alt="Post media" className={classes.image} />
+          <img src={media} alt="Post media" className={classes.image} />
         </div>
         {/* Post Buttons */}
         <div className={classes.postButtonsWrapper}>
@@ -116,11 +117,7 @@ function Post({ postId }) {
         </div>
       </article>
       {showOptionsDialog && (
-        <OptionsDialog
-          postId={id}
-          authorId={user.id}
-          onClose={() => setOptionsDialog(false)}
-        />
+        <OptionsDialog onClose={() => setOptionsDialog(false)} />
       )}
     </div>
   );
@@ -137,7 +134,7 @@ function AuthorCaption({ user, caption, createdAt }) {
         style={{ marginRight: 14, width: 32, height: 32 }}
       />
       <div style={{ display: 'flex', flexDirection: 'column ' }}>
-        <Link to={`/${user.username}`}>
+        <Link to={user.username}>
           <Typography
             variant="subtitle2"
             component="span"
@@ -176,7 +173,7 @@ function UserComment({ comment }) {
         style={{ marginRight: 14, width: 32, height: 32 }}
       />
       <div style={{ display: 'flex', flexDirection: 'column ' }}>
-        <Link to={`/${comment.user.username}`}>
+        <Link to={comment.user.username}>
           <Typography
             variant="subtitle2"
             component="span"
