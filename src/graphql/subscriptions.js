@@ -10,6 +10,18 @@ export const ME = gql`
       profile_image
       created_at
       last_checked
+      followers {
+        user {
+          id
+          user_id
+        }
+      }
+      following {
+        user {
+          id
+          user_id
+        }
+      }
       notifications(order_by: { created_at: desc }) {
         id
         type
