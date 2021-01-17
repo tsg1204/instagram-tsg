@@ -1,36 +1,59 @@
-import { Button } from "@material-ui/core";
-import React from "react";
-import { useFollowButtonStyles } from "../../styles";
+import React from 'react';
+import { Button } from '@material-ui/core';
+import { UserContext } from '../../App';
+import { useFollowButtonStyles } from '../../styles';
+import { FOLLOW_USER, UNFOLLOW_USER } from '../../graphql/mutations';
+import { useMutation } from '@apollo/react-hooks';
 
-function FollowButton({ side }) {
-  const classes = useFollowButtonStyles({ side});
-  const [isFollowing, setFollowing] = React.useState(false);
+function FollowButton({ side, id }) {
+  const classes = useFollowButtonStyles({ side });
+  const { currentUserId, followingIds } = React.useContext(UserContext);
+  const isAlreadyFollowing = followingIds.some(
+    (followingId) => followingId === id
+  );
+  const [isFollowing, setFollowing] = React.useState(isAlreadyFollowing);
+  const [followUser] = useMutation(FOLLOW_USER);
+  const [unfollowUser] = useMutation(UNFOLLOW_USER);
+  const variables = {
+    userIdToFollow: id,
+    currentUserId,
+  };
+
+  function handleFollowUser() {
+    setFollowing(true);
+    followUser({ variables });
+  }
+
+  function handleUnfollowUser() {
+    setFollowing(false);
+    unfollowUser({ variables });
+  }
 
   const followButton = (
     <Button
-      variant={side ? "text" : "contained"}
+      variant={side ? 'text' : 'contained'}
       color="primary"
       className={classes.button}
-      onClick={() => setFollowing(true)}
+      onClick={handleFollowUser}
       fullWidth
     >
       Follow
     </Button>
-  )
+  );
 
   const followingButton = (
     <Button
-      variant={side ? "text" : "outlined"}
+      variant={side ? 'text' : 'outlined'}
       color="primary"
       className={classes.button}
-      onClick={() => setFollowing(false)}
+      onClick={handleUnfollowUser}
       fullWidth
     >
       Following
     </Button>
-  )
+  );
 
-  return isFollowing ? followingButton : followButton
+  return isFollowing ? followingButton : followButton;
 }
 
 export default FollowButton;

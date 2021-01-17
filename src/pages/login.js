@@ -86,7 +86,7 @@ function LoginPage() {
                 label="Username, email or phone"
                 margin="dense"
                 className={classes.textField}
-                autocomplete="username"
+                autoComplete="username"
               />
               <TextField
                 name="password"
@@ -109,7 +109,7 @@ function LoginPage() {
                 type={showPassword ? 'text' : 'password'}
                 margin="dense"
                 className={classes.textField}
-                autocomplete="current-password"
+                autoComplete="current-password"
               />
               <Button
                 disabled={!formState.isValid || formState.isSubmitting}
