@@ -221,18 +221,29 @@ function LikeButton({ likes, postId, authorId }) {
 
 function SaveButton({ postId, savedPosts }) {
   const classes = useFeedPostStyles();
-  const [saved, setSaved] = React.useState(false);
+  const { currentUserId } = React.useContext(UserContext);
+  const isAlreadySaved = savedPosts.some(
+    ({ user_id }) => user_id === currentUserId
+  );
+  const [saved, setSaved] = React.useState(isAlreadySaved);
   const Icon = saved ? RemoveIcon : SaveIcon;
   const onClick = saved ? handleRemove : handleSave;
+  const [savePost] = useMutation(SAVE_POST);
+  const [removePost] = useMutation(UNSAVE_POST);
+  const variables = {
+    postId,
+    userId: currentUserId,
+  };
 
   function handleSave() {
-    console.log('save');
+    // console.log("save");
     setSaved(true);
+    savePost({ variables });
   }
 
   function handleRemove() {
-    console.log('remove');
     setSaved(false);
+    removePost({ variables });
   }
 
   return <Icon className={classes.saveIcon} onClick={onClick} />;
