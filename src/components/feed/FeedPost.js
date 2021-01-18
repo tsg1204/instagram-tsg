@@ -21,6 +21,8 @@ import {
 import HTMLEllipsis from 'react-lines-ellipsis/lib/html';
 import FollowSuggestions from '../shared/FollowSuggestions';
 import OptionsDialog from '../shared/OptionsDialog';
+import { formatDateToNow } from '../../utils/formatDate';
+import Img from 'react-graceful-image';
 
 function FeedPost({ post, index }) {
   const classes = useFeedPostStyles();
@@ -51,7 +53,7 @@ function FeedPost({ post, index }) {
       >
         {/* Feed Post Header */}
         <div className={classes.postHeader}>
-          <UserCard user={user} />
+          <UserCard user={user} location={location} />
           <MoreIcon
             className={classes.moreIcon}
             onClick={() => setOptionsDialog(true)}
@@ -59,7 +61,7 @@ function FeedPost({ post, index }) {
         </div>
         {/* Feed Post Image */}
         <div>
-          <img src={media} alt="Post media" className={classes.image} />
+          <Img src={media} alt="Post media" className={classes.image} />
         </div>
         {/* Feed Post Buttons */}
         <div className={classes.postButtonsWrapper}>
@@ -72,7 +74,7 @@ function FeedPost({ post, index }) {
             <SaveButton />
           </div>
           <Typography className={classes.likes} variant="subtitle2">
-            <span>{likes === 1 ? '1 like' : `${likes} likes`}</span>
+            <span>{likesCount === 1 ? '1 like' : `${likesCount} likes`}</span>
           </Typography>
           <div className={showCaption ? classes.expanded : classes.collapsed}>
             <Link to={`/${user.username}`}>
@@ -114,7 +116,7 @@ function FeedPost({ post, index }) {
               variant="body2"
               component="div"
             >
-              View all {comments.length} comments
+              View all {commentsCount} comments
             </Typography>
           </Link>
           {comments.map((comment) => (
@@ -134,7 +136,7 @@ function FeedPost({ post, index }) {
             </div>
           ))}
           <Typography color="textSecondary" className={classes.datePosted}>
-            5 DAYS AGO
+            {formatDateToNow(created_at)}
           </Typography>
         </div>
         <Hidden xsDown>
@@ -144,7 +146,11 @@ function FeedPost({ post, index }) {
       </article>
       {showFollowSuggestions && <FollowSuggestions />}
       {showOptionsDialog && (
-        <OptionsDialog onClose={() => setOptionsDialog(false)} />
+        <OptionsDialog
+          authorId={user.id}
+          postId={id}
+          onClose={() => setOptionsDialog(false)}
+        />
       )}
     </>
   );
