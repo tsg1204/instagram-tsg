@@ -26,8 +26,22 @@ function FeedPost({ post, index }) {
   const classes = useFeedPostStyles();
   const [showCaption, setCaption] = React.useState(false);
   const [showOptionsDialog, setOptionsDialog] = React.useState(false);
-  const { media, id, likes, user, caption, comments } = post;
+  const {
+    id,
+    media,
+    likes,
+    likes_aggregate,
+    saved_posts,
+    location,
+    user,
+    caption,
+    comments,
+    comments_aggregate,
+    created_at,
+  } = post;
   const showFollowSuggestions = index === 1;
+  const likesCount = likes_aggregate.aggregate.count;
+  const commentsCount = comments_aggregate.aggregate.count;
 
   return (
     <>
