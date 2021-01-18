@@ -151,7 +151,7 @@ function FeedPost({ post, index }) {
         </div>
         <Hidden xsDown>
           <Divider />
-          <Comment />
+          <Comment postId={id} />
         </Hidden>
       </article>
       {showFollowSuggestions && <FollowSuggestions />}
@@ -249,9 +249,49 @@ function SaveButton({ postId, savedPosts }) {
   return <Icon className={classes.saveIcon} onClick={onClick} />;
 }
 
-function Comment() {
+function Comment({ postId }) {
   const classes = useFeedPostStyles();
+  const { currentUserId, feedIds } = React.useContext(UserContext);
   const [content, setContent] = React.useState('');
+  const [createComment] = useMutation(CREATE_COMMENT);
+
+  function handleUpdate(cache, result) {
+    const variables = { limit: 2, feedIds };
+    const data = cache.readQuery({
+      query: GET_FEED,
+      variables,
+    });
+    const oldComment = result.data.insert_comments.returning[0];
+    const newComment = {
+      ...oldComment,
+      user: { ...oldComment.user },
+    };
+    const posts = data.posts.map((post) => {
+      const newPost = {
+        ...post,
+        comments: [...post.comments, newComment],
+        comments_aggregate: {
+          ...post.comments_aggregate,
+          aggregate: {
+            ...post.comments_aggregate.aggregate,
+            count: post.comments_aggregate.aggregate.count + 1,
+          },
+        },
+      };
+      return post.id === postId ? newPost : post;
+    });
+    cache.writeQuery({ query: GET_FEED, data: { posts } });
+    setContent('');
+  }
+
+  function handleAddComment() {
+    const variables = {
+      content,
+      postId,
+      userId: currentUserId,
+    };
+    createComment({ variables, update: handleUpdate });
+  }
 
   return (
     <div className={classes.commentContainer}>
@@ -261,8 +301,9 @@ function Comment() {
         placeholder="Add a comment..."
         multiline
         rowsMax={2}
-        row={1}
+        rows={1}
         onChange={(event) => setContent(event.target.value)}
+        className={classes.textField}
         InputProps={{
           classes: {
             root: classes.root,
@@ -271,6 +312,7 @@ function Comment() {
         }}
       />
       <Button
+        onClick={handleAddComment}
         color="primary"
         className={classes.commentButton}
         disabled={!content.trim()}
