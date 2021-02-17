@@ -16,14 +16,14 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, info) {
-    console.error(error, info);
+    //console.error(error, info);
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <Typography component="h1" variant="h6" align="center">
-          Oops! Something went wrong.
+          Something went wrong.
         </Typography>
       );
     }

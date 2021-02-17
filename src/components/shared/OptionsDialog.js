@@ -18,9 +18,9 @@ function OptionsDialog({ onClose, postId, authorId }) {
   const [unfollowUser] = useMutation(UNFOLLOW_USER);
   const [deletePost] = useMutation(DELETE_POST);
   const history = useHistory();
-  console.log('isOwner: ', isOwner);
-  console.log('authorId: ', authorId);
-  console.log('postId: ', postId);
+  //console.log('isOwner: ', isOwner);
+  //console.log('authorId: ', authorId);
+  //console.log('postId: ', postId);
 
   async function handleDeletePost() {
     const variables = {

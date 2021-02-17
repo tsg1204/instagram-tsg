@@ -40,13 +40,13 @@ function Post({ postId }) {
   // const [loading, setLoading] = React.useState(true);
   const [showOptionsDialog, setOptionsDialog] = React.useState(false);
   const variables = { postId };
-  console.log(postId);
+  //console.log(postId);
   const { data, loading } = useSubscription(GET_POST, { variables });
 
   // setTimeout(() => setLoading(false), 2000);
   if (loading) return <PostSkeleton />;
 
-  console.log('data: ', data); //undefined...???
+  //console.log('data: ', data); //undefined...???
 
   const {
     id,
